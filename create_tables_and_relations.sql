@@ -1,3 +1,5 @@
+use e_commerce_dbms;
+
 CREATE TABLE users(
 id BIGINT AUTO_INCREMENT PRIMARY KEY,
 first_name VARCHAR(50) NOT NULL,
@@ -31,7 +33,7 @@ CREATE TABLE orders(
 id BIGINT AUTO_INCREMENT PRIMARY KEY,
 order_date DATETIME NOT NULL,
 status ENUM("CREATED","CANCELED","SHIPPED","DELIVERED") DEFAULT "CREATED" NOT NULL,				# enum geliştirilebilir
-total_price INT NOT NULL, 																	# burada hesaplanması gerekebilir
+total_price INT NOT NULL, 																		# burada hesaplanması gerekebilir
 user_id BIGINT NOT NULL,
 FOREIGN KEY (user_id) REFERENCES users(id)
 );
@@ -40,7 +42,7 @@ CREATE TABLE categories(
 id BIGINT AUTO_INCREMENT PRIMARY KEY,
 name VARCHAR(50) NOT NULL,
 description VARCHAR(500) NOT NULL,
-image_source VARCHAR(200),						# array olmalı, bir kategorinin 1+ fotosu olabilir
+image_source VARCHAR(200),
 created_at DATETIME NOT NULL,					# bunlar oto girilmeli
 updated_at DATETIME NOT NULL					# bunlar oto girilmeli
 );
@@ -50,12 +52,23 @@ id BIGINT AUTO_INCREMENT PRIMARY KEY,
 name VARCHAR(50) NOT NULL,
 description VARCHAR(500) NOT NULL,
 price MEDIUMINT NOT NULL,
-image_source VARCHAR(200),						# array olmalı, bir ürünün 1+ fotosu olabilir
+# image_source VARCHAR(200),						# array olmalı, bir ürünün 1+ fotosu olabilir
 quantity SMALLINT DEFAULT 1 NOT NULL,
 category_id BIGINT NOT NULL,
 created_at DATETIME NOT NULL,					# bunlar oto girilmeli
 updated_at DATETIME NOT NULL,					# bunlar oto girilmeli
 FOREIGN KEY (category_id) REFERENCES categories(id)
+);
+
+CREATE TABLE product_images(
+id BIGINT AUTO_INCREMENT PRIMARY KEY,
+product_id BIGINT NOT NULL,
+image_url VARCHAR(200) NOT NULL,
+image_order SMALLINT DEFAULT 0,    -- to maintain display order of images
+is_primary BOOLEAN DEFAULT FALSE,  -- to mark main/thumbnail image
+created_at DATETIME NOT NULL,
+updated_at DATETIME NOT NULL,
+FOREIGN KEY (product_id) REFERENCES products(id)
 );
 
 CREATE TABLE reviews(
@@ -104,3 +117,6 @@ FOREIGN KEY (cart_id) REFERENCES carts(id);
 ALTER TABLE users
 ADD CONSTRAINT fk_user_wishlist
 FOREIGN KEY (wishlist_id) REFERENCES wishlists(id);
+
+-- DROP SCHEMA e_commerce_dbms;
+-- CREATE SCHEMA e_commerce_dbms;

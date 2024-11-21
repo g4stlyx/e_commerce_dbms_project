@@ -1,0 +1,135 @@
+<!DOCTYPE html><html><head><meta http-equiv="Content-Security-Policy" content="default-src 'self' 'unsafe-inline' 'unsafe-eval' data: blob: https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://code.jquery.com https://unpkg.com https://d3js.org https://threejs.org https://cdn.plot.ly https://stackpath.bootstrapcdn.com https://maps.googleapis.com https://cdn.tailwindcss.com https://ajax.googleapis.com https://kit.fontawesome.com https://cdn.datatables.net https://maxcdn.bootstrapcdn.com https://code.highcharts.com https://tako-static-assets-production.s3.amazonaws.com https://www.youtube.com https://fonts.googleapis.com https://fonts.gstatic.com https://pfst.cf2.poecdn.net https://puc.poecdn.net https://i.imgur.com https://wikimedia.org https://*.icons8.com https://*.giphy.com https://picsum.photos https://images.unsplash.com; frame-src 'self' https://www.youtube.com https://trytako.com; child-src 'self'; manifest-src 'self'; worker-src 'self'; upgrade-insecure-requests; block-all-mixed-content;">
+    <title>E-Commerce ER Diagram</title>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f5f5f5;
+        }
+        #diagram {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+    </style>
+</head>
+<body>
+    <div id="diagram">
+        <pre class="mermaid">erDiagram
+    USERS {
+        bigint id PK
+        varchar first_name
+        char middle_initial
+        varchar last_name
+        varchar email
+        boolean is_admin
+        date birth_date
+        varchar address
+        varchar phone_number
+        varchar username
+        datetime created_at
+        datetime updated_at
+        bigint cart_id FK
+        bigint wishlist_id FK
+    }
+    
+    CARTS {
+        bigint id PK
+        bigint user_id FK
+    }
+    
+    WISHLISTS {
+        bigint id PK
+        bigint user_id FK
+    }
+    
+    ORDERS {
+        bigint id PK
+        datetime order_date
+        enum status
+        int total_price
+        bigint user_id FK
+    }
+    
+    CATEGORIES {
+        bigint id PK
+        varchar name
+        varchar description
+        varchar image_source
+        datetime created_at
+        datetime updated_at
+    }
+    
+    PRODUCTS {
+        bigint id PK
+        varchar name
+        varchar description
+        mediumint price
+        varchar image_source
+        smallint quantity
+        bigint category_id FK
+        datetime created_at
+        datetime updated_at
+    }
+    
+    REVIEWS {
+        bigint id PK
+        char rating
+        varchar title
+        varchar text
+        bigint product_id FK
+        bigint user_id FK
+        datetime created_at
+        datetime updated_at
+    }
+    
+    CART_ITEMS {
+        bigint id PK
+        smallint quantity
+        bigint cart_id FK
+        bigint product_id FK
+    }
+    
+    WISHLIST_ITEMS {
+        bigint id PK
+        bigint wishlist_id FK
+        bigint product_id FK
+    }
+    
+    ORDER_ITEMS {
+        bigint id PK
+        smallint quantity
+        bigint order_id FK
+        bigint product_id FK
+    }
+    
+    USERS ||--|| CARTS : has
+    USERS ||--|| WISHLISTS : has
+    USERS ||--o{ ORDERS : places
+    USERS ||--o{ REVIEWS : writes
+    CATEGORIES ||--o{ PRODUCTS : contains
+    PRODUCTS ||--o{ REVIEWS : receives
+    PRODUCTS ||--o{ CART_ITEMS : included_in
+    PRODUCTS ||--o{ WISHLIST_ITEMS : saved_in
+    PRODUCTS ||--o{ ORDER_ITEMS : part_of
+    CARTS ||--o{ CART_ITEMS : contains
+    WISHLISTS ||--o{ WISHLIST_ITEMS : contains
+    ORDERS ||--o{ ORDER_ITEMS : contains
+        </pre>
+    </div>
+    <script>
+        mermaid.initialize({
+            startOnLoad: true,
+            theme: 'default',
+            er: {
+                layoutDirection: 'TB',
+                entityPadding: 15,
+                useMaxWidth: false
+            }
+        });
+    </script>
+
+
+</body></html>
