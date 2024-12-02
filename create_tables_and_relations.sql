@@ -64,8 +64,8 @@ CREATE TABLE product_images(
 id BIGINT AUTO_INCREMENT PRIMARY KEY,
 product_id BIGINT NOT NULL,
 image_url VARCHAR(200) NOT NULL,
-image_order SMALLINT DEFAULT 0,    -- to maintain display order of images
-is_primary BOOLEAN DEFAULT FALSE,  -- to mark main/thumbnail image
+image_order SMALLINT DEFAULT 0,    # görsel sıralaması için
+is_primary BOOLEAN DEFAULT FALSE,  # ilk/ana görsel için
 created_at DATETIME NOT NULL,
 updated_at DATETIME NOT NULL,
 FOREIGN KEY (product_id) REFERENCES products(id)
