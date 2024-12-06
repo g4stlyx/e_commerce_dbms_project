@@ -27,8 +27,7 @@ INSERT INTO categories (name, description, parent_id) VALUES
 INSERT INTO categories (name, description, parent_id) VALUES
 ('Monitor', 'Computer displays and monitors', (SELECT * FROM(SELECT id FROM categories WHERE name = 'Peripherals')as c)),
 ('Keyboard', 'Computer keyboards', (SELECT * FROM(SELECT id FROM categories WHERE name = 'Peripherals')as c)),
-('Mouse', 'Computer mice and pointing devices', (SELECT * FROM(SELECT id FROM categories WHERE name = 'Peripherals')as c)),
-('Headphone', 'Audio headphones and headsets', (SELECT * FROM(SELECT id FROM categories WHERE name = 'Peripherals')as c));
+('Mouse', 'Computer mice and pointing devices', (SELECT * FROM(SELECT id FROM categories WHERE name = 'Peripherals')as c));
 
 -- // MAIN CATEGORIES /////////////////////////////////////////////////////////////////////
 
@@ -62,7 +61,7 @@ INSERT INTO attributes (name, category_id) VALUES
 INSERT INTO attributes (name, category_id) VALUES
 ('Generation', (SELECT id FROM categories WHERE name = 'Processor')),   # intel 15th gen., ryzen 9000 series
 ('Socket Type', (SELECT id FROM categories WHERE name = 'Processor')),	# AM4, AM5, LGA 1851 etc.
-('CPU Frequency Speed', (SELECT id FROM categories WHERE name = 'Processor')), # 3.0 GHz etc.
+('Frequency Speed', (SELECT id FROM categories WHERE name = 'Processor')), # 3.0 GHz etc.
 ('Core Count', (SELECT id FROM categories WHERE name = 'Processor'));	# 4, 16, 20 etc.
 
 -- RAM specific attributes
@@ -91,7 +90,7 @@ INSERT INTO attributes (name, category_id) VALUES
 
 -- Laptop specific attributes
 INSERT INTO attributes (name, category_id) VALUES
-('Laptop Screen Size', (SELECT id FROM categories WHERE name = 'Laptop'));
+('Screen Size', (SELECT id FROM categories WHERE name = 'Laptop'));
 
 -- // SUBCATEGORIES - Peripherals /////////////////////////////////////////////////////////
 
