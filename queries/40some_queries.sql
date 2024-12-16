@@ -23,7 +23,12 @@ JOIN attributes a ON av.attribute_id = a.id
 WHERE a.name = 'MHz' AND av.value = '3200';
 
 
-
+#
+#Fetch all products with their attributes (JOIN with attribute_values and attributes).
+#Retrieve products under a specific category (e.g., Processor).
+#Filter products by a specific attribute value (e.g., Socket Type = AM4).
+#Display products with stock and pricing information.
+#Generate aggregate data, such as the average price per category.
 
 
 

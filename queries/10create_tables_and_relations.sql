@@ -11,10 +11,11 @@ CREATE TABLE users(
 	address VARCHAR(100),
 	phone_number VARCHAR(15),
 	username VARCHAR(20) UNIQUE NOT NULL,
+    password VARCHAR(128) NOT NULL,														# ne ile encode edileceğine göre değişiyor, 128 üstü zor ama (SHA-512)
 	created_at DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL,
 	updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP NOT NULL,
-	cart_id INT,																# BIGINT to INT, 8 bytes to 4 bytes (max value 2.1b), can be null now
-	wishlist_id INT																# can be null now (otherwise it simply couldnt be populated.)
+	cart_id INT,																		# BIGINT to INT, 8 bytes to 4 bytes (max value 2.1b), can be null now
+	wishlist_id INT																		# can be null now (otherwise it simply couldnt be populated.)
 );
 
 CREATE TABLE carts(
@@ -86,8 +87,8 @@ CREATE TABLE product_images(
 	image_url VARCHAR(200) NOT NULL,
 	image_order TINYINT DEFAULT 0,
 	is_primary BOOLEAN DEFAULT FALSE,
-	created_at DATETIME NOT NULL,
-	updated_at DATETIME NOT NULL,
+	created_at DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL,
+	updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP NOT NULL,
 	FOREIGN KEY (product_id) REFERENCES products(id)
 );
 

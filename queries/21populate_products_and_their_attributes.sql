@@ -6,6 +6,11 @@ INSERT INTO products (name, description, price, brand, model, category_id) VALUE
 ('AMD Ryzen 7 5800X', '8-core processor for gaming and productivity', 299.99, "AMD", "Ryzen 7 5800X", (SELECT id FROM categories WHERE name = 'Processor')),
 ('Intel Core i9-12900K', 'High-end desktop processor', 589.99, "Intel", "Core i9-12900K", (SELECT id FROM categories WHERE name = 'Processor'));
 
+INSERT INTO product_images (product_id, image_url, image_order, is_primary) VALUES
+((SELECT id FROM products WHERE name = 'Intel Core i9-12900K'), 'https://example.com/intel-i9-13900k-1.jpg', 1, true),
+((SELECT id FROM products WHERE name = 'AMD Ryzen 7 5800X'), 'https://example.com/amd-ryzen-7950x-1.jpg', 1, true),
+((SELECT id FROM products WHERE name = 'AMD Ryzen 7 5800X'), 'https://example.com/amd-ryzen-7950x-2.jpg', 2, false);
+
 -- Add attribute values for Ryzen 7 5800X
 INSERT INTO attribute_values (product_id, attribute_id, value) VALUES
 ((SELECT id FROM products WHERE name = 'AMD Ryzen 7 5800X'), (SELECT id FROM attributes WHERE name = 'Generation' AND category_id = (SELECT id FROM categories WHERE name = 'Processor')), 'Ryzen 5000 Series'),
@@ -25,6 +30,12 @@ INSERT INTO products (name, description, price, brand, model, category_id) VALUE
 ('ASUS ROG Maximus Z790 Hero', 'High-end motherboard for Intel 13th Gen CPUs', 600.00, "ASUS", "ROG Maximus Z790 Hero", (SELECT id FROM categories WHERE name = 'Motherboard')),
 ('MSI MPG Z790 Carbon WiFi', 'Feature-rich motherboard with WiFi 6E', 400.00, "MSI", "MPG Z790 Carbon WiFi", (SELECT id FROM categories WHERE name = 'Motherboard'));
 
+INSERT INTO product_images (product_id, image_url, image_order, is_primary) VALUES
+((SELECT id FROM products WHERE name = 'ASUS ROG Maximus Z790 Hero'), 'https://example.com/asus-crosshair-x670e-1.jpg', 1, true),
+((SELECT id FROM products WHERE name = 'ASUS ROG Maximus Z790 Hero'), 'https://example.com/asus-crosshair-x670e-2.jpg', 2, false),
+((SELECT id FROM products WHERE name = 'MSI MPG Z790 Carbon WiFi'), 'https://example.com/msi-b550-tomahawk-1.jpg', 1, true),
+((SELECT id FROM products WHERE name = 'MSI MPG Z790 Carbon WiFi'), 'https://example.com/msi-b550-tomahawk-2.jpg', 2, false);
+
 -- Add attribute values for ASUS ROG Maximus Z790 Hero
 INSERT INTO attribute_values (product_id, attribute_id, value) VALUES
 ((SELECT id FROM products WHERE name = 'ASUS ROG Maximus Z790 Hero'), (SELECT id FROM attributes WHERE name = 'Processor Type' AND category_id = (SELECT id FROM categories WHERE name = 'Motherboard')), 'Intel 13th Gen'),
@@ -32,7 +43,6 @@ INSERT INTO attribute_values (product_id, attribute_id, value) VALUES
 ((SELECT id FROM products WHERE name = 'ASUS ROG Maximus Z790 Hero'), (SELECT id FROM attributes WHERE name = 'Ram Type' AND category_id = (SELECT id FROM categories WHERE name = 'Motherboard')), 'DDR5'),
 ((SELECT id FROM products WHERE name = 'ASUS ROG Maximus Z790 Hero'), (SELECT id FROM attributes WHERE name = 'Ram Slot Count' AND category_id = (SELECT id FROM categories WHERE name = 'Motherboard')), '4'),
 ((SELECT id FROM products WHERE name = 'ASUS ROG Maximus Z790 Hero'), (SELECT id FROM attributes WHERE name = 'Size' AND category_id = (SELECT id FROM categories WHERE name = 'Motherboard')), 'ATX');
-
 
 -- Add attribute values for MSI MPG Z790 Carbon WiFi
 INSERT INTO attribute_values (product_id, attribute_id, value) VALUES
@@ -46,6 +56,12 @@ INSERT INTO attribute_values (product_id, attribute_id, value) VALUES
 INSERT INTO products (name, description, price, brand, model, category_id) VALUES
 ('Corsair Vengeance LPX 16GB (2x8GB) DDR4 3200MHz', '16GB DDR4 RAM for gaming and general use', 79.99, "Corsair", "CMK16GX4M2B3200C16", (SELECT id FROM categories WHERE name = 'RAM')),
 ('G.Skill Trident Z Neo 32GB (2x16GB) DDR4 3600MHz', 'High-performance 32GB DDR4 RAM', 149.99, "G.Skill", "F4-3600C16D-32GTZN", (SELECT id FROM categories WHERE name = 'RAM'));
+
+INSERT INTO product_images (product_id, image_url, image_order, is_primary) VALUES
+((SELECT id FROM products WHERE name = 'Corsair Vengeance LPX 16GB (2x8GB) DDR4 3200MHz'), 'https://example.com/corsair-rgb-32gb-1.jpg', 1, true),
+((SELECT id FROM products WHERE name = 'Corsair Vengeance LPX 16GB (2x8GB) DDR4 3200MHz'), 'https://example.com/corsair-rgb-32gb-2.jpg', 2, false),
+((SELECT id FROM products WHERE name = 'G.Skill Trident Z Neo 32GB (2x16GB) DDR4 3600MHz'), 'https://example.com/gskill-trident-z5-1.jpg', 1, true),
+((SELECT id FROM products WHERE name = 'G.Skill Trident Z Neo 32GB (2x16GB) DDR4 3600MHz'), 'https://example.com/gskill-trident-z5-2.jpg', 2, false);
 
 -- Add attribute values for Corsair Vengeance LPX
 INSERT INTO attribute_values (product_id, attribute_id, value) VALUES
@@ -64,6 +80,12 @@ INSERT INTO products (name, description, price, brand, model, category_id) VALUE
 ('NVIDIA GeForce RTX 4080', 'High-end graphics card for 4K gaming', 1199.99, "NVIDIA", "RTX 4080", (SELECT id FROM categories WHERE name = 'Graphic Card')),
 ('AMD Radeon RX 7900 XTX', 'Powerful graphics card for 4K gaming', 999.99, "AMD", "RX 7900 XTX", (SELECT id FROM categories WHERE name = 'Graphic Card'));
 
+INSERT INTO product_images (product_id, image_url, image_order, is_primary) VALUES
+((SELECT id FROM products WHERE name = 'NVIDIA GeForce RTX 4080'), 'https://example.com/nvidia-rtx-4090-1.jpg', 1, true),
+((SELECT id FROM products WHERE name = 'NVIDIA GeForce RTX 4080'), 'https://example.com/nvidia-rtx-4090-2.jpg', 2, false),
+((SELECT id FROM products WHERE name = 'AMD Radeon RX 7900 XTX'), 'https://example.com/amd-rx-7900-1.jpg', 1, true),
+((SELECT id FROM products WHERE name = 'AMD Radeon RX 7900 XTX'), 'https://example.com/amd-rx-7900-2.jpg', 2, false);
+
 -- Add attribute values for NVIDIA GeForce RTX 4080
 INSERT INTO attribute_values (product_id, attribute_id, value) VALUES
 ((SELECT id FROM products WHERE name = 'NVIDIA GeForce RTX 4080'), (SELECT id FROM attributes WHERE name = 'GPU Producer' AND category_id = (SELECT id FROM categories WHERE name = 'Graphic Card')), 'NVIDIA'),
@@ -81,6 +103,11 @@ INSERT INTO products (name, description, price, brand, model, category_id) VALUE
 ('Corsair 4000D Airflow', 'Mid-tower ATX case with excellent airflow', 99.99, "Corsair", "4000D Airflow", (SELECT id FROM categories WHERE name = 'Computer Case')),
 ('Fractal Design Meshify 2', 'High-airflow ATX case with a minimalist design', 129.99, "Fractal Design", "Meshify 2", (SELECT id FROM categories WHERE name = 'Computer Case'));
 
+INSERT INTO product_images (product_id, image_url, image_order, is_primary) VALUES
+((SELECT id FROM products WHERE name = 'Corsair 4000D Airflow'), 'https://example.com/corsair-400d-1.jpg', 1, true),
+((SELECT id FROM products WHERE name = 'Corsair 4000D Airflow'), 'https://example.com/corsair-400d-2.jpg', 2, false),
+((SELECT id FROM products WHERE name = 'Fractal Design Meshify 2'), 'https://example.com/meshify-1.jpg', 1, true);
+
 -- Add attribute values for Corsair 4000D Airflow
 INSERT INTO attribute_values (product_id, attribute_id, value) VALUES
 ((SELECT id FROM products WHERE name = 'Corsair 4000D Airflow'), (SELECT id FROM attributes WHERE name = 'Motherboard Size' AND category_id = (SELECT id FROM categories WHERE name = 'Computer Case')), 'ATX'),
@@ -95,6 +122,10 @@ INSERT INTO attribute_values (product_id, attribute_id, value) VALUES
 INSERT INTO products (name, description, price, brand, model, category_id) VALUES
 ('Corsair RM850x (2021)', '850W 80+ Gold fully modular power supply', 159.99, "Corsair", "RM850x (2021)", (SELECT id FROM categories WHERE name = 'Power Supply')),
 ('Seasonic FOCUS GX-750', '750W 80+ Gold fully modular power supply', 129.99, "Seasonic", "FOCUS GX-750", (SELECT id FROM categories WHERE name = 'Power Supply'));
+
+INSERT INTO product_images (product_id, image_url, image_order, is_primary) VALUES
+((SELECT id FROM products WHERE name = 'Corsair RM850x (2021)'), 'https://example.com/corsair-rm850x-1.jpg', 1, true),
+((SELECT id FROM products WHERE name = 'Seasonic FOCUS GX-750'), 'https://example.com/seasonic-1.jpg', 1, true);
 
 -- Add attribute values for Corsair RM850x (2021)
 INSERT INTO attribute_values (product_id, attribute_id, value) VALUES
@@ -114,6 +145,12 @@ INSERT INTO attribute_values (product_id, attribute_id, value) VALUES
 INSERT INTO products (name, description, price, brand, model, category_id) VALUES
 ('SkyTech Blaze 3.0 Gaming PC', 'Gaming desktop with RTX 3060', 1299.99, "SkyTech", "Blaze 3.0", (SELECT id FROM categories WHERE name = 'Desktop')),
 ('HP Omen 45L Gaming Desktop', 'High-end gaming PC with liquid cooling', 2499.99, "HP", "Omen 45L", (SELECT id FROM categories WHERE name = 'Desktop'));
+
+INSERT INTO product_images (product_id, image_url, image_order, is_primary) VALUES
+((SELECT id FROM products WHERE name = 'SkyTech Blaze 3.0 Gaming PC'), 'https://example.com/skytech-blaze-3.0-1.jpg', 1, true),
+((SELECT id FROM products WHERE name = 'SkyTech Blaze 3.0 Gaming PC'), 'https://example.com/skytech-blaze-3.0-2.jpg', 2, false),
+((SELECT id FROM products WHERE name = 'HP Omen 45L Gaming Desktop'), 'https://example.com/hp-omen-45l-1.jpg', 1, true),
+((SELECT id FROM products WHERE name = 'HP Omen 45L Gaming Desktop'), 'https://example.com/hp-omen-45l-2.jpg', 2, false);
 
 -- Add attribute values for SkyTech Blaze 3.0
 INSERT INTO attribute_values (product_id, attribute_id, value) VALUES
@@ -138,6 +175,12 @@ INSERT INTO products (name, description, price, brand, model, category_id) VALUE
 ('MacBook Pro 16-inch', 'Powerful laptop with M2 Pro chip', 2499.99, "Apple", "MacBook Pro 16", (SELECT id FROM categories WHERE name = 'Laptop')),
 ('ASUS ROG Zephyrus G14', 'Gaming laptop with AMD Ryzen 9', 1799.99, "ASUS", "ROG Zephyrus G14", (SELECT id FROM categories WHERE name = 'Laptop'));
 
+INSERT INTO product_images (product_id, image_url, image_order, is_primary) VALUES
+((SELECT id FROM products WHERE name = 'MacBook Pro 16-inch'), 'https://example.com/macbook-pro-16-1.jpg', 1, true),
+((SELECT id FROM products WHERE name = 'MacBook Pro 16-inch'), 'https://example.com/macbook-pro-16-2.jpg', 2, false),
+((SELECT id FROM products WHERE name = 'ASUS ROG Zephyrus G14'), 'https://example.com/asus-rog-g14-1.jpg', 1, true),
+((SELECT id FROM products WHERE name = 'ASUS ROG Zephyrus G14'), 'https://example.com/asus-rog-g14-2.jpg', 2, false);
+
 -- Add attribute values for MacBook Pro 16-inch
 INSERT INTO attribute_values (product_id, attribute_id, value) VALUES
 ((SELECT id FROM products WHERE name = 'MacBook Pro 16-inch'), (SELECT id FROM attributes WHERE name = 'Processor Brand' AND category_id = (SELECT id FROM categories WHERE name = 'Computers')), 'Apple'),
@@ -159,12 +202,18 @@ INSERT INTO attribute_values (product_id, attribute_id, value) VALUES
 
 
 
-
 -- // PERIPHERALS ///////////////////////////////////////////////////////////////
 -- Monitors
 INSERT INTO products (name, description, price, brand, model, category_id) VALUES
 ('LG 27GL850-B 27" QHD IPS 144Hz Gaming Monitor', '27-inch QHD gaming monitor', 399.99, "LG", "27GL850-B", (SELECT id FROM categories WHERE name = 'Monitor')),
 ('Samsung Odyssey G9 49" DQHD 240Hz', '49-inch ultrawide gaming monitor', 1499.99, "Samsung", "Odyssey G9", (SELECT id FROM categories WHERE name = 'Monitor'));
+
+INSERT INTO product_images (product_id, image_url, image_order, is_primary) VALUES
+((SELECT id FROM products WHERE name = 'LG 27GL850-B 27" QHD IPS 144Hz Gaming Monitor'), 'https://example.com/lg-27gl850-b-1.jpg', 1, true),
+((SELECT id FROM products WHERE name = 'LG 27GL850-B 27" QHD IPS 144Hz Gaming Monitor'), 'https://example.com/lg-27gl850-b-2.jpg', 2, false),
+((SELECT id FROM products WHERE name = 'Samsung Odyssey G9 49" DQHD 240Hz'), 'https://example.com/samsung-odyssey-g9-1.jpg', 1, true),
+((SELECT id FROM products WHERE name = 'Samsung Odyssey G9 49" DQHD 240Hz'), 'https://example.com/samsung-odyssey-g9-2.jpg', 2, false),
+((SELECT id FROM products WHERE name = 'Samsung Odyssey G9 49" DQHD 240Hz'), 'https://example.com/samsung-odyssey-g9-3.jpg', 3, false);
 
 -- Add attribute values for LG 27GL850-B
 INSERT INTO attribute_values (product_id, attribute_id, value) VALUES
@@ -189,6 +238,12 @@ INSERT INTO products (name, description, price, brand, model, category_id) VALUE
 ('Corsair K70 RGB MK.2 Mechanical Keyboard', 'Mechanical gaming keyboard with Cherry MX Brown switches', 129.99, "Corsair", "K70 RGB MK.2", (SELECT id FROM categories WHERE name = 'Keyboard')),
 ('Logitech G915 TKL Wireless Gaming Keyboard', 'Wireless keyboard with low-profile GL switches', 229.99, "Logitech", "G915 TKL", (SELECT id FROM categories WHERE name = 'Keyboard'));
 
+INSERT INTO product_images (product_id, image_url, image_order, is_primary) VALUES
+((SELECT id FROM products WHERE name = 'Corsair K70 RGB MK.2 Mechanical Keyboard'), 'https://example.com/corsair-k70-1.jpg', 1, true),
+((SELECT id FROM products WHERE name = 'Corsair K70 RGB MK.2 Mechanical Keyboard'), 'https://example.com/corsair-k70-2.jpg', 2, false),
+((SELECT id FROM products WHERE name = 'Logitech G915 TKL Wireless Gaming Keyboard'), 'https://example.com/logitech-g915-1.jpg', 1, true),
+((SELECT id FROM products WHERE name = 'Logitech G915 TKL Wireless Gaming Keyboard'), 'https://example.com/logitech-g915-2.jpg', 2, false);
+
 -- Add attribute values for Corsair K70 RGB MK.2
 INSERT INTO attribute_values (product_id, attribute_id, value) VALUES
 ((SELECT id FROM products WHERE name = 'Corsair K70 RGB MK.2 Mechanical Keyboard'), (SELECT id FROM attributes WHERE name = 'Connectivity Type' AND category_id = (SELECT id FROM categories WHERE name = 'Peripherals')), 'USB'),
@@ -205,6 +260,13 @@ INSERT INTO attribute_values (product_id, attribute_id, value) VALUES
 INSERT INTO products (name, description, price, brand, model, category_id) VALUES
 ('Logitech G502 HERO High Performance Gaming Mouse', 'Wired gaming mouse with adjustable weights', 79.99, "Logitech", "G502 HERO", (SELECT id FROM categories WHERE name = 'Mouse')),
 ('Razer DeathAdder V2 Pro Wireless Gaming Mouse', 'Wireless gaming mouse with ergonomic design', 129.99, "Razer", "DeathAdder V2 Pro", (SELECT id FROM categories WHERE name = 'Mouse'));
+
+INSERT INTO product_images (product_id, image_url, image_order, is_primary) VALUES
+((SELECT id FROM products WHERE name = 'Logitech G502 HERO High Performance Gaming Mouse'), 'https://example.com/logitech-g502-1.jpg', 1, true),
+((SELECT id FROM products WHERE name = 'Logitech G502 HERO High Performance Gaming Mouse'), 'https://example.com/logitech-g502-2.jpg', 2, false),
+((SELECT id FROM products WHERE name = 'Razer DeathAdder V2 Pro Wireless Gaming Mouse'), 'https://example.com/razer-deathadder-1.jpg', 1, true),
+((SELECT id FROM products WHERE name = 'Razer DeathAdder V2 Pro Wireless Gaming Mouse'), 'https://example.com/razer-deathadder-2.jpg', 2, false),
+((SELECT id FROM products WHERE name = 'Razer DeathAdder V2 Pro Wireless Gaming Mouse'), 'https://example.com/razer-deathadder-3.jpg', 3, false);
 
 -- Add attribute values for Logitech G502 HERO
 INSERT INTO attribute_values (product_id, attribute_id, value) VALUES
