@@ -1,5 +1,5 @@
 # /// USERS /////////////////////////////////////////////////
-
+# meslek ekle, 100 kullanıcı olsun, çeşitlilik olsun. veriler random olsun, ama yaş aralığı ver + 50 kadın 50 erkek
 INSERT INTO users (id, username, password, first_name, middle_initial, last_name, birth_date, is_admin, email, phone_number, address)
 VALUES
 (1, 'johndoe', 'password123', 'John', 'A', 'Doe', '1990-05-14', false, 'johndoe@example.com', '1234567890', '123 Main St, Springfield'),
@@ -53,7 +53,7 @@ VALUES
     
     
 # /// ORDERS AND ORDER ITEMS ///////////////////////////////////////////////////////////////
-
+# bu da çeşitli, çok olmalı
 INSERT INTO orders (id, order_date, status, total_price, user_id)
 VALUES
 -- John Doe's orders
