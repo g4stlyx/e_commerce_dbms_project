@@ -5,7 +5,9 @@ CREATE TABLE users(
 	first_name VARCHAR(50) NOT NULL,
 	middle_initial CHAR(1),
 	last_name VARCHAR(50) NOT NULL,
-	email VARCHAR(100) NOT NULL,														# 20 az geldi
+    gender CHAR(1) NOT NULL,
+    job VARCHAR(100),																	# işsiz olabilir
+	email VARCHAR(100) NOT NULL,
 	is_admin BOOLEAN DEFAULT FALSE NOT NULL,
 	birth_date DATE,
 	address VARCHAR(100),
