@@ -1,0 +1,6 @@
+-- 1: Update 'total_price' whenever a new order_item is added or removed
+-- 2: User must purchase the product before reviewing it
+-- 3: 
+-- 4:
+-- 5:
+-- 6:
