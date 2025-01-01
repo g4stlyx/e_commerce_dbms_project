@@ -279,3 +279,27 @@ INSERT INTO attribute_values (product_id, attribute_id, value) VALUES
 ((SELECT id FROM products WHERE name = 'Razer DeathAdder V2 Pro Wireless Gaming Mouse'), (SELECT id FROM attributes WHERE name = 'Connectivity Type' AND category_id = (SELECT id FROM categories WHERE name = 'Peripherals')), 'Wireless'),
 ((SELECT id FROM products WHERE name = 'Razer DeathAdder V2 Pro Wireless Gaming Mouse'), (SELECT id FROM attributes WHERE name = 'Button Count' AND category_id = (SELECT id FROM categories WHERE name = 'Mouse')), '8'),
 ((SELECT id FROM products WHERE name = 'Razer DeathAdder V2 Pro Wireless Gaming Mouse'), (SELECT id FROM attributes WHERE name = 'Max DPI' AND category_id = (SELECT id FROM categories WHERE name = 'Mouse')), '20000');
+
+-- i forgot to give them specific quantities
+UPDATE products SET quantity=5 WHERE id=1; 
+UPDATE products SET quantity=24 WHERE id=2; 
+UPDATE products SET quantity=100 WHERE id=3; 
+UPDATE products SET quantity=4 WHERE id=4; 
+UPDATE products SET quantity=7 WHERE id=5; 
+UPDATE products SET quantity=8 WHERE id=6; 
+UPDATE products SET quantity=9 WHERE id=7; 
+UPDATE products SET quantity=35 WHERE id=8; 
+UPDATE products SET quantity=61 WHERE id=9; 
+UPDATE products SET quantity=72 WHERE id=10; 
+UPDATE products SET quantity=111 WHERE id=11; 
+UPDATE products SET quantity=2 WHERE id=12; 
+UPDATE products SET quantity=4 WHERE id=13; 
+UPDATE products SET quantity=1 WHERE id=14; 
+UPDATE products SET quantity=8 WHERE id=15; 
+UPDATE products SET quantity=66 WHERE id=16;
+UPDATE products SET quantity=33 WHERE id=17; 
+UPDATE products SET quantity=74 WHERE id=18; 
+UPDATE products SET quantity=23 WHERE id=19; 
+UPDATE products SET quantity=38 WHERE id=20; 
+UPDATE products SET quantity=90 WHERE id=21; 
+UPDATE products SET quantity=71 WHERE id=22;  

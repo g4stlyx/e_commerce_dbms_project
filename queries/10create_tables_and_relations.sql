@@ -36,7 +36,6 @@ CREATE TABLE orders(
 	id INT AUTO_INCREMENT PRIMARY KEY,
 	order_date DATETIME NOT NULL,
 	status ENUM('CREATED', 'CANCELED', 'SHIPPED', 'DELIVERED', 'RETURNED', 'REFUNDED') DEFAULT 'CREATED' NOT NULL,
-	# burada hesaplanması gerekebilir -gereksiz duruyor, backend'de order oluşturulurken hesaplanması daha mantıklı
 	total_price DECIMAL(10,2) NOT NULL, 												# INT to DECIMAL obviously, biggest value: 99999999.99		10 digit total: 2 digit after point, 8 digit before point						
 	user_id INT NOT NULL,
 	FOREIGN KEY (user_id) REFERENCES users(id)
