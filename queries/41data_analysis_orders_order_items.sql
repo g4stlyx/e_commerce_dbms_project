@@ -88,9 +88,133 @@ JOIN
 ORDER BY 
 	o.order_date, u.id;
 
-# Further Analysis and Ideas
-# Time-based analysis: Analyze orders over time (e.g., orders per month, year).
-# Combine with product data: Analyze spending habits on specific categories or brands.
-# User segmentation: Segment users based on their spending or purchase frequency.
-# Compare order values for users with job or without a job.
+-- Orders per month
+SELECT
+    DATE_FORMAT(order_date, '%Y-%m') AS order_month,
+    COUNT(*) AS order_count
+FROM
+    orders
+GROUP BY
+    order_month
+ORDER BY
+    order_month;
+
+ -- Orders per year and month
+SELECT
+    DATE_FORMAT(order_date, '%Y-%m') AS order_month,				# to extract year and month from order_date
+    YEAR(order_date) AS order_year,
+    COUNT(*) AS order_count
+FROM
+    orders
+GROUP BY
+    order_month, order_year
+ORDER BY
+    order_year, order_month;
+    
+-- Order per day
+SELECT
+    DATE_FORMAT(order_date, '%Y-%m-%d') AS order_day,
+    COUNT(*) AS order_count
+FROM
+    orders
+GROUP BY
+    order_day
+ORDER BY
+    order_day;
+    
+# which categories are most popular with customers (spending habits per category)
+SELECT
+     c.name AS category_name,
+     SUM(oi.quantity * p.price) AS total_revenue
+ FROM
+     categories c
+ JOIN
+     products p ON c.id = p.category_id
+ JOIN
+     order_items oi ON p.id = oi.product_id
+ GROUP BY
+     c.name
+ ORDER BY
+     total_revenue DESC;
+
+# which brands are most popular with customers (spending habits per brand)
+SELECT
+     p.brand,
+     SUM(oi.quantity * p.price) AS total_revenue
+ FROM
+     products p
+ JOIN
+     order_items oi ON p.id = oi.product_id
+GROUP BY
+     p.brand
+ORDER BY
+     total_revenue DESC;
+
+# classify users based on their spending or purchase frequency.
+SELECT
+    u.id AS user_id,
+    u.first_name,
+    u.last_name,
+    COUNT(o.id) AS total_orders,
+    SUM(o.total_price) AS total_spent,
+    CASE
+        WHEN SUM(o.total_price) > 1000 AND COUNT(o.id) > 3 THEN 'High Value & Frequent'
+        WHEN SUM(o.total_price) > 500 THEN 'Mid Value'
+        WHEN COUNT(o.id) > 1 THEN 'Frequent'
+        ELSE 'Low Value & Inrequent'
+    END AS customer_class
+ FROM
+    users u
+LEFT JOIN
+    orders o ON u.id = o.user_id
+GROUP BY
+    u.id, u.first_name, u.last_name
+ORDER BY
+     total_spent DESC, total_orders DESC;
+     
 # Filter orders by date range.
+# i used date_format to remove time info from order_date
+SELECT DATE_FORMAT(o.order_date, "%Y-%m-%d") as order_date, o.status, o.total_price, (SELECT username FROM users WHERE id=o.user_id) as user
+FROM orders o
+WHERE o.order_date > "2024-11-01" AND o.order_date < "2024-12-30"
+ORDER BY order_date ASC;
+
+# number of products bought in each category by each job.
+SELECT
+    CASE WHEN 
+		u.job IS NULL THEN 'unemployed'
+		ELSE u.job
+		END AS job,
+    c.name AS category_name,
+    COUNT(oi.product_id) AS total_products_bought
+FROM
+    users u
+JOIN
+    orders o ON u.id = o.user_id
+JOIN
+    order_items oi ON o.id = oi.order_id
+JOIN
+    products p ON oi.product_id = p.id
+JOIN
+    categories c ON p.category_id = c.id
+GROUP BY
+    u.job, c.name
+ORDER BY
+    u.job, total_products_bought DESC;
+
+# which job how many they spent
+SELECT
+	CASE WHEN 
+		u.job IS NULL THEN 'unemployed'
+		ELSE u.job
+		END AS job_category,
+	COUNT(*) AS a,
+	SUM(o.total_price) AS total_spent
+FROM
+	users u
+LEFT JOIN										# to get all users, even if they dont create any orders
+	orders o ON u.id = o.user_id
+GROUP BY
+	job_category
+ORDER BY
+	total_spent DESC;

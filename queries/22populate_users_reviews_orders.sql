@@ -105,6 +105,9 @@ INSERT INTO users (username, password, first_name, middle_initial, last_name, bi
 ('Fadime_Yilmaz2', 'password123', 'Fadime', 'M', 'Yılmaz', '1975-12-19', 0, 'user99@example.com', '5540591973', 'F', 'accountant', 'İzmir'),
 ('Ozlem_Kaya2', 'password123', 'Özlem', 'N', 'Kaya', '1964-07-17', 0, 'user100@example.com', '5271535245', 'F', 'waiter', 'Bursa');
 
+# making people unemployed for diversity
+UPDATE users SET job=NULL WHERE username="Ozlem_Kaya2" OR username="Fadime_Yilmaz2" OR username="Bayram_Arslan" OR username="Ahmet_Kaya";
+
 # /// REVIEWS ////////////////////////////////////////////////
 
 INSERT INTO reviews (id, rating, title, text, product_id, user_id)

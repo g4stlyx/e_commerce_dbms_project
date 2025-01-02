@@ -1,5 +1,6 @@
 use e_commerce_dbms;
 
+# prevent a user to review a product they havent bought
 DELIMITER //
 
 CREATE TRIGGER before_review_insert
@@ -22,7 +23,3 @@ BEGIN
 END//
 
 DELIMITER ;
-
-# test: try to review a product user havent bought
-
-INSERT INTO reviews(user_id, rating, title) VALUES ();

@@ -1,3 +1,6 @@
+use e_commerce_dbms;
+
+# update order total price after an order_item is inserted
 DELIMITER //
 
 CREATE TRIGGER after_order_item_insert

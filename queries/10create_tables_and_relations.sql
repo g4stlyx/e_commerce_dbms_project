@@ -138,5 +138,24 @@ ALTER TABLE users
 	ADD CONSTRAINT fk_user_wishlist
 	FOREIGN KEY (wishlist_id) REFERENCES wishlists(id);
 
-# DROP SCHEMA e_commerce_dbms;
-# CREATE SCHEMA e_commerce_dbms;
+# if a wishlist is deleted, items in it should be deleted too (same for orders and carts)
+-- Modifying order_items
+ALTER TABLE order_items
+DROP FOREIGN KEY order_items_ibfk_1;
+ALTER TABLE order_items
+ADD CONSTRAINT order_items_ibfk_1
+FOREIGN KEY (order_id) REFERENCES orders(id) ON DELETE CASCADE;
+
+-- Modifying wishlist_items
+ALTER TABLE wishlist_items
+DROP FOREIGN KEY wishlist_items_ibfk_1;
+ALTER TABLE wishlist_items
+ADD CONSTRAINT wishlist_items_ibfk_1
+FOREIGN KEY (wishlist_id) REFERENCES wishlists(id) ON DELETE CASCADE;
+
+-- Modifying cart_items
+ALTER TABLE cart_items
+DROP FOREIGN KEY cart_items_ibfk_1;
+ALTER TABLE cart_items
+ADD CONSTRAINT cart_items_ibfk_1
+FOREIGN KEY (cart_id) REFERENCES carts(id) ON DELETE CASCADE;

@@ -1,0 +1,7 @@
+-- 1: Update 'total_price' whenever a new order_item is added or removed
+-- 2: User must purchase the product before reviewing it
+-- 3: ürün stoklarda yoksa alamaz
+-- 4: her order'dan sonra alınan product'ların quantity'si alındığı kadar azalsın
+-- 5: ürün stokları 3'ün altına düşünce uyarı versin
+-- 6: a user can review a specific product max once
+-- 7: username cannot be changed.
