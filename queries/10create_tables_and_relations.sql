@@ -133,6 +133,9 @@ CREATE TABLE cart_items(
 	FOREIGN KEY (product_id) REFERENCES products(id)
 );
 
+ALTER TABLE cart_items
+MODIFY quantity TINYINT UNSIGNED NOT NULL;												# TINYINT for the values -127 to 127, unsigned for 0 to 255
+
 CREATE TABLE wishlist_items(
 	id INT AUTO_INCREMENT PRIMARY KEY,
 	wishlist_id INT NOT NULL,
@@ -149,6 +152,10 @@ CREATE TABLE order_items(
 	FOREIGN KEY (order_id) REFERENCES orders(id),
 	FOREIGN KEY (product_id) REFERENCES products(id)
 );
+
+ALTER TABLE order_items
+MODIFY quantity TINYINT UNSIGNED NOT NULL;												# TINYINT for the values -127 to 127, unsigned for 0 to 255
+
 
 ALTER TABLE users
 	ADD CONSTRAINT fk_user_cart
