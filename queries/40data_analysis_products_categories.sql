@@ -46,12 +46,25 @@ FROM categories c
 JOIN products p ON c.id = p.category_id
 GROUP BY c.id, c.name;
 
+# most reviewed products
+SELECT p.name as product_name, COUNT(r.id) as review_count
+FROM products p
+LEFT JOIN reviews r ON p.id = r.product_id
+GROUP BY p.id, p.name
+ORDER BY review_count DESC;
 
+# products with avg review rating
+SELECT p.name, AVG(r.rating) as avg_rating, COUNT(r.id) as review_count
+FROM products p
+LEFT JOIN reviews r ON p.id = r.product_id
+GROUP BY p.id, p.name
+ORDER BY avg_rating DESC;
 
+# products with low stock
+SELECT name, quantity
+FROM products
+WHERE quantity < 5; 
 
-
-
-
-
-
-
+# total value of inventory
+SELECT SUM(price * quantity) AS total_inventory_value
+FROM products;

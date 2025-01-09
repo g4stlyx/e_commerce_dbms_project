@@ -17,6 +17,26 @@ GROUP BY
 ORDER BY 
 	total_orders DESC;
 
+# The products each user bought. ordered by user to see who bought what
+SELECT
+    u.id AS user_id,
+    u.first_name AS user_first_name,
+    p.name AS product_name,
+    p.id AS product_id,
+    COUNT(oi.product_id) AS purchase_count,
+    o.id as order_id
+FROM
+    users u
+JOIN
+    orders o ON u.id = o.user_id
+JOIN
+    order_items oi ON o.id = oi.order_id
+JOIN
+    products p ON oi.product_id = p.id
+GROUP BY
+    u.id, u.first_name, p.id, p.name
+ORDER BY u.id, p.name;
+
 # users who spent the most, top 10
 SELECT 
     u.id AS user_id,
@@ -218,3 +238,45 @@ GROUP BY
 	job_category
 ORDER BY
 	total_spent DESC;
+
+# products bought together
+SELECT
+	oi1.product_id AS product_id1,
+	p1.name AS product_name1,
+	oi2.product_id AS product_id2,
+	p2.name AS product_name2,
+	COUNT(*) AS count_of_orders
+FROM 
+	order_items oi1
+JOIN 
+	orders o ON oi1.order_id = o.id
+JOIN 
+	order_items oi2 ON o.id = oi2.order_id
+JOIN 
+	products p1 ON oi1.product_id = p1.id
+JOIN 
+	products p2 ON oi2.product_id = p2.id
+WHERE 
+	oi1.product_id < oi2.product_id					# aynı ürün çiftini iki kere yazmasın diye: [(p1,p2),(p2,p1)] olarak
+GROUP BY 
+	oi1.product_id, oi2.product_id
+ORDER BY 
+	count_of_orders DESC;
+    
+# earning by category and by month (hangi kategori hangi ay ne kadar satmış)
+SELECT
+	DATE_FORMAT(o.order_date, '%Y-%m') AS order_month,
+	c.name AS category_name,
+	SUM(oi.quantity * p.price) AS total_earning
+FROM
+	categories c
+JOIN
+	products p ON c.id = p.category_id
+JOIN
+	order_items oi ON p.id = oi.product_id
+JOIN
+	orders o ON oi.order_id = o.id
+GROUP BY
+	order_month, c.name
+ORDER BY
+	order_month, total_revenue DESC;

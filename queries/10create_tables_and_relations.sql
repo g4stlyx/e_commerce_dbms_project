@@ -1,4 +1,5 @@
 use e_commerce_dbms;
+SET PERSIST sql_mode=(SELECT REPLACE(@@sql_mode,'ONLY_FULL_GROUP_BY',''));
 
 CREATE TABLE users(
 	id INT AUTO_INCREMENT PRIMARY KEY,
@@ -16,8 +17,8 @@ CREATE TABLE users(
     password VARCHAR(128) NOT NULL,														# ne ile encode edileceğine göre değişiyor, 128 üstü zor ama (SHA-512)
 	created_at DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL,
 	updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP NOT NULL,
-	cart_id INT,																		# BIGINT to INT, 8 bytes to 4 bytes (max value 2.1b), can be null now
-	wishlist_id INT																		# can be null now (otherwise it simply couldnt be populated.)
+	cart_id INT,																		# max value 2.1b
+	wishlist_id INT																		
 );
 
 CREATE TABLE carts(
@@ -36,7 +37,7 @@ CREATE TABLE orders(
 	id INT AUTO_INCREMENT PRIMARY KEY,
 	order_date DATETIME NOT NULL,
 	status ENUM('CREATED', 'CANCELED', 'SHIPPED', 'DELIVERED', 'RETURNED', 'REFUNDED') DEFAULT 'CREATED' NOT NULL,
-	total_price DECIMAL(10,2) NOT NULL, 												# INT to DECIMAL obviously, biggest value: 99999999.99		10 digit total: 2 digit after point, 8 digit before point						
+	total_price DECIMAL(10,2) NOT NULL, 												# max value: 99999999.99		10 digit total: 2 digit after point, 8 digit before point						
 	user_id INT NOT NULL,
 	FOREIGN KEY (user_id) REFERENCES users(id)
 );
@@ -44,9 +45,9 @@ CREATE TABLE orders(
 CREATE TABLE categories(
 	id INT AUTO_INCREMENT PRIMARY KEY,
 	name VARCHAR(50) NOT NULL,
-	description TEXT NOT NULL,															# to allow descriptions longer than 500 characters.
+	description VARCHAR(1500) NOT NULL,															# to allow descriptions longer than 500 characters. (max 65.635 characters)
 	image_source VARCHAR(200),
-	parent_id INT DEFAULT NULL,															# Self-referencing foreign key for subcategories, if null: it is a parent category
+	parent_id INT DEFAULT NULL,																	# Self-referencing foreign key for subcategories, if null: it is a parent category
 	created_at DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL,
 	updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP NOT NULL,
 	FOREIGN KEY (parent_id) REFERENCES categories(id)
@@ -55,7 +56,7 @@ CREATE TABLE categories(
 CREATE TABLE products(
 	id INT AUTO_INCREMENT PRIMARY KEY,
 	name VARCHAR(50) NOT NULL,
-	description VARCHAR(500) NOT NULL,
+	description VARCHAR(1500) NOT NULL,
 	price DECIMAL(10,2) NOT NULL,
 	quantity TINYINT DEFAULT 1 NOT NULL,												# bir üründen 255'den fazla olabilecekse SMALLINT kullan
 	brand VARCHAR(100),																	# 100 karakter ok gibi
@@ -65,6 +66,11 @@ CREATE TABLE products(
 	updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP NOT NULL,
 	FOREIGN KEY (category_id) REFERENCES categories(id)
 );
+
+ALTER TABLE categories
+MODIFY description VARCHAR(1500) NOT NULL;												# eskiden text'ti (65635 karakter), gereksiz
+ALTER TABLE products
+MODIFY description VARCHAR(1500) NOT NULL;												# 500 karakter az geldi
 
 CREATE TABLE attributes (															# to keep all attribute types in one column, instead of creating tables for each product category (ram_products, graphic_card_products ...)
     id INT AUTO_INCREMENT PRIMARY KEY,
@@ -76,8 +82,8 @@ CREATE TABLE attributes (															# to keep all attribute types in one col
 CREATE TABLE attribute_values (
     id INT AUTO_INCREMENT PRIMARY KEY,
     product_id INT NOT NULL,         				
-    attribute_id INT NOT NULL,       												-- id of the attribute "mhz", "brand", "technology" etc.
-    value VARCHAR(100) NOT NULL,     												-- (e.g., "3200", "Corsair" ,"DDR4")
+    attribute_id INT NOT NULL,       												# id of the attribute "mhz", "brand", "technology" etc.
+    value VARCHAR(100) NOT NULL,     												# (e.g., "3200", "Corsair" ,"DDR4")
     FOREIGN KEY (product_id) REFERENCES products(id),
     FOREIGN KEY (attribute_id) REFERENCES attributes(id)
 );
@@ -105,6 +111,13 @@ CREATE TABLE reviews(
 	FOREIGN KEY (user_id) REFERENCES users(id),
 	FOREIGN KEY (product_id) REFERENCES products(id)
 );
+
+# limit rating value in reviews within 1 and 5.
+ALTER TABLE reviews
+ADD CONSTRAINT chk_rating CHECK (rating >= 1 AND rating <= 5);
+
+# test for rating limit
+INSERT INTO reviews(rating, title, text, product_id, user_id) VALUES(8, "a", "a", 14, 1);
 
 CREATE TABLE cart_items(
 	id INT AUTO_INCREMENT PRIMARY KEY,
