@@ -55,10 +55,10 @@ CREATE TABLE categories(
 
 CREATE TABLE products(
 	id INT AUTO_INCREMENT PRIMARY KEY,
-	name VARCHAR(50) NOT NULL,
+	name VARCHAR(150) NOT NULL,
 	description VARCHAR(1500) NOT NULL,
 	price DECIMAL(10,2) NOT NULL,
-	quantity TINYINT DEFAULT 1 NOT NULL,												# bir üründen 255'den fazla olabilecekse SMALLINT kullan
+	quantity TINYINT UNSIGNED DEFAULT 1 NOT NULL,										# bir üründen 255'den fazla olabilecekse SMALLINT UNSIGNED kullan
 	brand VARCHAR(100),																	# 100 karakter ok gibi
 	model VARCHAR(100),
 	category_id INT NOT NULL,
@@ -71,6 +71,11 @@ ALTER TABLE categories
 MODIFY description VARCHAR(1500) NOT NULL;												# eskiden text'ti (65635 karakter), gereksiz
 ALTER TABLE products
 MODIFY description VARCHAR(1500) NOT NULL;												# 500 karakter az geldi
+ALTER TABLE products
+MODIFY name VARCHAR(150) NOT NULL;														# 50 karakter az geldi
+ALTER TABLE products
+MODIFY quantity TINYINT UNSIGNED NOT NULL;												# TINYINT for the values -127 to 127, unsigned for 0 to 255
+
 
 CREATE TABLE attributes (															# to keep all attribute types in one column, instead of creating tables for each product category (ram_products, graphic_card_products ...)
     id INT AUTO_INCREMENT PRIMARY KEY,
