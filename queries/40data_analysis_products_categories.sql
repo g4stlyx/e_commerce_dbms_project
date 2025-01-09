@@ -26,19 +26,16 @@ WHERE (a1.name = 'Ram Type' AND av1.value = 'DDR4')
 AND (a2.name="Ram Capacity" AND av2.value="16GB");
 
 # all products with their attributes
-SELECT p.id, p.name, a.name as attribute_name, av.value  
+SELECT p.id as "product id", p.name, a.name as attribute_name, av.value  
 FROM products p
 JOIN attribute_values av ON p.id = av.product_id
-JOIN attributes a ON av.attribute_id = a.id;
+JOIN attributes a ON av.attribute_id = a.id
+ORDER BY p.id;
 
 # products under a specific category (e.g., Processor).
 SELECT p.id, p.name
 FROM products p
 WHERE p.category_id = (SELECT id FROM categories WHERE name="Processor");
-
-# all products with stock and pricing information.
-SELECT p.name, p.quantity, p.price
-FROM products p;
 
 # average price per category.
 SELECT c.name as category_name, AVG(p.price) as avg_price
@@ -59,6 +56,10 @@ FROM products p
 LEFT JOIN reviews r ON p.id = r.product_id
 GROUP BY p.id, p.name
 ORDER BY avg_rating DESC;
+
+# all products with stock and pricing information.
+SELECT p.name, p.quantity, p.price
+FROM products p;
 
 # products with low stock
 SELECT name, quantity

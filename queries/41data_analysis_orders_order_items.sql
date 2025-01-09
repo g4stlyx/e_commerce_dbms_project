@@ -17,7 +17,7 @@ GROUP BY
 ORDER BY 
 	total_orders DESC;
 
-# The products each user bought. ordered by user to see who bought what
+# products each user bought. ordered by user to see who bought what
 SELECT
     u.id AS user_id,
     u.first_name AS user_first_name,
@@ -181,7 +181,7 @@ SELECT
         WHEN SUM(o.total_price) > 1000 AND COUNT(o.id) > 3 THEN 'High Value & Frequent'
         WHEN SUM(o.total_price) > 500 THEN 'Mid Value'
         WHEN COUNT(o.id) > 1 THEN 'Frequent'
-        ELSE 'Low Value & Inrequent'
+        ELSE 'Low Value & Infrequent'
     END AS customer_class
  FROM
     users u
@@ -279,4 +279,6 @@ JOIN
 GROUP BY
 	order_month, c.name
 ORDER BY
-	order_month, total_revenue DESC;
+	order_month, total_earning DESC;
+    
+    
