@@ -126,7 +126,7 @@ INSERT INTO reviews(rating, title, text, product_id, user_id) VALUES(8, "a", "a"
 
 CREATE TABLE cart_items(
 	id INT AUTO_INCREMENT PRIMARY KEY,
-	quantity TINYINT NOT NULL,
+	quantity TINYINT UNSIGNED NOT NULL,													# it was TINYINT
 	cart_id INT NOT NULL,
 	product_id INT NOT NULL,
 	FOREIGN KEY (cart_id) REFERENCES carts(id),
@@ -146,7 +146,7 @@ CREATE TABLE wishlist_items(
 
 CREATE TABLE order_items(
 	id INT AUTO_INCREMENT PRIMARY KEY,
-	quantity TINYINT NOT NULL,
+	quantity TINYINT UNSIGNED NOT NULL,
 	order_id INT NOT NULL,
 	product_id INT NOT NULL,
 	FOREIGN KEY (order_id) REFERENCES orders(id),
@@ -155,7 +155,6 @@ CREATE TABLE order_items(
 
 ALTER TABLE order_items
 MODIFY quantity TINYINT UNSIGNED NOT NULL;												# TINYINT for the values -127 to 127, unsigned for 0 to 255
-
 
 ALTER TABLE users
 	ADD CONSTRAINT fk_user_cart
