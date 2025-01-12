@@ -138,8 +138,6 @@ INSERT INTO attribute_values (product_id, attribute_id, value) VALUES
 ((SELECT id FROM products WHERE name = 'Seasonic FOCUS GX-750'), (SELECT id FROM attributes WHERE name = 'Efficiency Rating' AND category_id = (SELECT id FROM categories WHERE name = 'Power Supply')), '80+ Gold');
 
 
-
-
 -- // COMPUTERS ///////////////////////////////////////////////////////////////
 -- Desktops
 INSERT INTO products (name, description, price, brand, model, category_id) VALUES

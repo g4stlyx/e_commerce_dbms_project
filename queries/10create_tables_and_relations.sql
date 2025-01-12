@@ -1,6 +1,9 @@
 use e_commerce_dbms;
 SET PERSIST sql_mode=(SELECT REPLACE(@@sql_mode,'ONLY_FULL_GROUP_BY',''));
 
+-- DROP SCHEMA e_commerce_dbms;
+-- CREATE SCHEMA e_commerce_dbms;
+
 CREATE TABLE users(
 	id INT AUTO_INCREMENT PRIMARY KEY,
 	first_name VARCHAR(50) NOT NULL,
@@ -59,23 +62,13 @@ CREATE TABLE products(
 	description VARCHAR(1500) NOT NULL,
 	price DECIMAL(10,2) NOT NULL,
 	quantity TINYINT UNSIGNED DEFAULT 1 NOT NULL,										# bir üründen 255'den fazla olabilecekse SMALLINT UNSIGNED kullan
-	brand VARCHAR(100),																	# 100 karakter ok gibi
+    brand VARCHAR(100),																	# 100 karakter ok gibi
 	model VARCHAR(100),
 	category_id INT NOT NULL,
 	created_at DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL,
 	updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP NOT NULL,
 	FOREIGN KEY (category_id) REFERENCES categories(id)
 );
-
-ALTER TABLE categories
-MODIFY description VARCHAR(1500) NOT NULL;												# eskiden text'ti (65635 karakter), gereksiz
-ALTER TABLE products
-MODIFY description VARCHAR(1500) NOT NULL;												# 500 karakter az geldi
-ALTER TABLE products
-MODIFY name VARCHAR(150) NOT NULL;														# 50 karakter az geldi
-ALTER TABLE products
-MODIFY quantity TINYINT UNSIGNED NOT NULL;												# TINYINT for the values -127 to 127, unsigned for 0 to 255
-
 
 CREATE TABLE attributes (															# to keep all attribute types in one column, instead of creating tables for each product category (ram_products, graphic_card_products ...)
     id INT AUTO_INCREMENT PRIMARY KEY,
@@ -122,7 +115,7 @@ ALTER TABLE reviews
 ADD CONSTRAINT chk_rating CHECK (rating >= 1 AND rating <= 5);
 
 # test for rating limit
-INSERT INTO reviews(rating, title, text, product_id, user_id) VALUES(8, "a", "a", 14, 1);
+-- INSERT INTO reviews(rating, title, text, product_id, user_id) VALUES(8, "a", "a", 14, 1);
 
 CREATE TABLE cart_items(
 	id INT AUTO_INCREMENT PRIMARY KEY,
@@ -132,9 +125,6 @@ CREATE TABLE cart_items(
 	FOREIGN KEY (cart_id) REFERENCES carts(id),
 	FOREIGN KEY (product_id) REFERENCES products(id)
 );
-
-ALTER TABLE cart_items
-MODIFY quantity TINYINT UNSIGNED NOT NULL;												# TINYINT for the values -127 to 127, unsigned for 0 to 255
 
 CREATE TABLE wishlist_items(
 	id INT AUTO_INCREMENT PRIMARY KEY,
@@ -152,9 +142,6 @@ CREATE TABLE order_items(
 	FOREIGN KEY (order_id) REFERENCES orders(id),
 	FOREIGN KEY (product_id) REFERENCES products(id)
 );
-
-ALTER TABLE order_items
-MODIFY quantity TINYINT UNSIGNED NOT NULL;												# TINYINT for the values -127 to 127, unsigned for 0 to 255
 
 ALTER TABLE users
 	ADD CONSTRAINT fk_user_cart
