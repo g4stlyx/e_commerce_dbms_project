@@ -148,11 +148,14 @@ SELECT
 # en popüler(en fazla gelir getiren) markalar
 SELECT
      p.brand,
-     SUM(oi.quantity * p.price) AS total_revenue
+     SUM(oi.quantity * p.price) AS total_revenue,
+     COUNT(oi.quantity)
  FROM
      products p
  JOIN
      order_items oi ON p.id = oi.product_id
+ JOIN categories c ON c.id = p.category_id
+WHERE c.name = "Processor"
 GROUP BY
      p.brand
 ORDER BY
@@ -194,7 +197,7 @@ SELECT
 		ELSE u.job
 		END AS job,
     c.name AS category_name,
-    COUNT(oi.product_id) AS total_products_bought
+    p.name
 FROM
     users u
 JOIN
@@ -205,10 +208,7 @@ JOIN
     products p ON oi.product_id = p.id
 JOIN
     categories c ON p.category_id = c.id
-GROUP BY
-    u.job, c.name
-ORDER BY
-    u.job, total_products_bought DESC;
+WHERE u.job = "engineer" AND c.name = "Laptop";
 
 # hangi meslek ne kadar harcıyor?
 SELECT
@@ -250,3 +250,79 @@ GROUP BY
 	oi1.product_id, oi2.product_id
 ORDER BY 
 	count_of_orders DESC;
+    
+# hangi şehir ne kadar harcıyor
+SELECT
+	u.address AS address_category,
+	COUNT(*) AS a,
+	SUM(o.total_price) AS total_spent
+FROM
+	users u
+LEFT JOIN
+	orders o ON u.id = o.user_id
+GROUP BY
+	address_category
+ORDER BY
+	total_spent DESC;
+    
+# kullanıcı yaşlarını gruplandır
+SELECT
+    FLOOR(TIMESTAMPDIFF(YEAR, u.birth_date, CURDATE())/10)*10 AS age_group,
+    COUNT(o.id) AS order_count,
+    SUM(o.total_price) AS total_spent
+FROM
+    users u
+LEFT JOIN
+    orders o ON u.id = o.user_id
+GROUP BY
+    age_group
+ORDER BY
+    age_group;
+ 
+# ortalama kullanıcı yaşı
+SELECT
+    AVG(TIMESTAMPDIFF(YEAR, birth_date, CURDATE())) AS average_age
+FROM
+    users;
+    
+# youngest and oldest users
+SELECT
+    first_name,
+    last_name,
+    birth_date,
+    TIMESTAMPDIFF(YEAR, birth_date, CURDATE()) AS age
+FROM
+    users
+ORDER BY
+    age ASC
+LIMIT 1; -- youngest
+
+ SELECT
+    first_name,
+    last_name,
+    birth_date,
+    TIMESTAMPDIFF(YEAR, birth_date, CURDATE()) AS age
+FROM
+    users
+ORDER BY
+    age DESC
+LIMIT 1; -- oldest
+
+# kaç tane ram satılmış
+SELECT
+    p.name AS product_name,
+    c.name AS category_name,
+    SUM(oi.quantity) AS total_sold,
+    SUM(oi.quantity * p.price) AS total_income
+FROM
+    products p
+JOIN
+    categories c ON p.category_id = c.id
+JOIN
+    order_items oi ON p.id = oi.product_id
+WHERE
+    c.name = 'RAM'
+GROUP BY
+    p.name, c.name
+ORDER BY
+    total_sold DESC;
