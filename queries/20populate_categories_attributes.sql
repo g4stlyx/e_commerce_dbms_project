@@ -4,7 +4,7 @@ use e_commerce_dbms;
 INSERT INTO categories (name, description, parent_id) VALUES
 ('Computer Parts', 'Components and parts for building computers', NULL),
 ('Computers', 'desktop and laptop computers, ready to use', NULL),
-('Peripherals', 'Computer peripherals and accessories', NULL);
+('Peripherals', 'Computer peripherals and accessories', NULL);				# çevre birimleri
 
 -- Insert subcategories for Computer Parts
 -- why using two selects to get the category_id : https://stackoverflow.com/a/43610081/21996724 (if not: Error Code: 1093. You can't specify target table 'categories' for update in FROM clause)
@@ -16,7 +16,7 @@ INSERT INTO categories (name, description, parent_id) VALUES
 ('Computer Case', 'PC Cases and chassis', (SELECT * FROM (SELECT id FROM categories WHERE name = 'Computer Parts')as c)),
 ('Power Supply', 'Power Supply Units (PSUs)', (SELECT * FROM (SELECT id FROM categories WHERE name = 'Computer Parts') as c));
 
--- Insert subcategories for Electronics
+-- Insert subcategories for Computers
 -- why using two selects to get the category_id : https://stackoverflow.com/a/43610081/21996724 (if not: Error Code: 1093. You can't specify target table 'categories' for update in FROM clause)
 INSERT INTO categories (name, description, parent_id) VALUES
 ('Laptop', 'Portable laptops and notebooks', (SELECT * FROM (SELECT id FROM categories WHERE name = 'Computers')as c)),
@@ -32,6 +32,7 @@ INSERT INTO categories (name, description, parent_id) VALUES
 -- // MAIN CATEGORIES /////////////////////////////////////////////////////////////////////
 
 -- Computer Parts attributes: brand and model are enough actually (they are in products since they are common for all product categories)
+
 -- Computers attributes:
 INSERT INTO attributes (name, category_id) VALUES
 ('Processor Brand', (SELECT id FROM categories WHERE name = 'Computers')),
@@ -43,6 +44,7 @@ INSERT INTO attributes (name, category_id) VALUES
 ('Ram Type', (SELECT id FROM categories WHERE name = 'Computers')),
 ('SSD Capacity', (SELECT id FROM categories WHERE name = 'Computers')),
 ('HDD Capacity', (SELECT id FROM categories WHERE name = 'Computers'));
+
 -- Peripherals attributes
 INSERT INTO attributes (name, category_id) VALUES
 ('Connectivity Type', (SELECT id FROM categories WHERE name = 'Peripherals'));		# Bluetooth/Wired/USB etc.

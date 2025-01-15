@@ -1,6 +1,6 @@
 use e_commerce_dbms;
 
-# number of orders, total money spent, and average money spent per order for each user.
+# kullanıcıların harcadığı toplam para, sipariş sayıları, ve sipariş başına ortalama harcadıkları
 SELECT 
     u.id AS user_id,
     u.first_name,
@@ -17,7 +17,7 @@ GROUP BY
 ORDER BY 
 	total_orders DESC;
 
-# products each user bought. ordered by user to see who bought what
+# kimin hangi ürünü ne kadar aldığını gösteriyor
 SELECT
     u.id AS user_id,
     u.first_name AS user_first_name,
@@ -37,7 +37,7 @@ GROUP BY
     u.id, u.first_name, p.id, p.name
 ORDER BY u.id, p.name;
 
-# users who spent the most, top 10
+# en çok para harcayan müşteriler, top 10
 SELECT 
     u.id AS user_id,
     u.first_name,
@@ -53,7 +53,7 @@ ORDER BY
     total_spent DESC
 LIMIT 10; 
 
-# number of orders for each status ("CREATED," "SHIPPED," "DELIVERED", "CANCELED")
+# hangi statüste kaç tane sipariş var?
 SELECT 
     status,
     COUNT(*) AS order_count
@@ -64,7 +64,7 @@ GROUP BY
 ORDER BY 
     order_count DESC;
 
-# products most frequently bought
+# en sık satın alınan ürünler, top 10
 SELECT 
     p.id AS product_id,
     p.name AS product_name,
@@ -80,7 +80,7 @@ ORDER BY
     purchase_count DESC
 LIMIT 10;
 
-# average order total prices for each gender: which gender spends more in 1 order, and in total?
+# hangi cinsiyet daha fazla para harcıyor, 
 SELECT
      u.gender,
      AVG(o.total_price) AS average_order_total_price,
@@ -92,7 +92,7 @@ SELECT
  GROUP BY
     u.gender;
 
-# order history of users
+# sipariş geçmişi
 SELECT 
 	u.id AS user_id, 
     u.first_name, 
@@ -108,7 +108,7 @@ JOIN
 ORDER BY 
 	o.order_date, u.id;
 
--- Orders per month
+-- aylık sipariş bilgisi
 SELECT
     DATE_FORMAT(order_date, '%Y-%m') AS order_month,
     COUNT(*) AS order_count
@@ -118,20 +118,8 @@ GROUP BY
     order_month
 ORDER BY
     order_month;
-
- -- Orders per year and month
-SELECT
-    DATE_FORMAT(order_date, '%Y-%m') AS order_month,				# to extract year and month from order_date
-    YEAR(order_date) AS order_year,
-    COUNT(*) AS order_count
-FROM
-    orders
-GROUP BY
-    order_month, order_year
-ORDER BY
-    order_year, order_month;
     
--- Order per day
+-- günlük sipariş bilgisi
 SELECT
     DATE_FORMAT(order_date, '%Y-%m-%d') AS order_day,
     COUNT(*) AS order_count
@@ -142,7 +130,7 @@ GROUP BY
 ORDER BY
     order_day;
     
-# which categories are most popular with customers (spending habits per category)
+# en popüler(en çok gelir getiren) kategoriler
 SELECT
      c.name AS category_name,
      SUM(oi.quantity * p.price) AS total_revenue
@@ -157,20 +145,23 @@ SELECT
  ORDER BY
      total_revenue DESC;
 
-# which brands are most popular with customers (spending habits per brand)
+# en popüler(en fazla gelir getiren) markalar
 SELECT
      p.brand,
-     SUM(oi.quantity * p.price) AS total_revenue
+     SUM(oi.quantity * p.price) AS total_revenue,
+     COUNT(oi.quantity)
  FROM
      products p
  JOIN
      order_items oi ON p.id = oi.product_id
+ JOIN categories c ON c.id = p.category_id
+WHERE c.name = "Processor"
 GROUP BY
      p.brand
 ORDER BY
      total_revenue DESC;
 
-# classify users based on their spending or purchase frequency.
+# müşterileri ne kadar harcadıklarına ve ne sıklıkla alışveriş yaptıklarına göre sınıflandırma
 SELECT
     u.id AS user_id,
     u.first_name,
@@ -192,21 +183,21 @@ GROUP BY
 ORDER BY
      total_spent DESC, total_orders DESC;
      
-# Filter orders by date range.
+# girilen iki tarih arası verilmiş siparişler
 # i used date_format to remove time info from order_date
 SELECT DATE_FORMAT(o.order_date, "%Y-%m-%d") as order_date, o.status, o.total_price, (SELECT username FROM users WHERE id=o.user_id) as user
 FROM orders o
 WHERE o.order_date > "2024-11-01" AND o.order_date < "2024-12-30"
 ORDER BY order_date ASC;
 
-# number of products bought in each category by each job.
+# hangi meslek hangi kategoriden kaç ürün almış
 SELECT
     CASE WHEN 
 		u.job IS NULL THEN 'unemployed'
 		ELSE u.job
 		END AS job,
     c.name AS category_name,
-    COUNT(oi.product_id) AS total_products_bought
+    p.name
 FROM
     users u
 JOIN
@@ -217,12 +208,9 @@ JOIN
     products p ON oi.product_id = p.id
 JOIN
     categories c ON p.category_id = c.id
-GROUP BY
-    u.job, c.name
-ORDER BY
-    u.job, total_products_bought DESC;
+WHERE u.job = "engineer" AND c.name = "Laptop";
 
-# which job how many they spent
+# hangi meslek ne kadar harcıyor?
 SELECT
 	CASE WHEN 
 		u.job IS NULL THEN 'unemployed'
@@ -239,7 +227,7 @@ GROUP BY
 ORDER BY
 	total_spent DESC;
 
-# products bought together
+# birlikte satın alınan ürünler
 SELECT
 	oi1.product_id AS product_id1,
 	p1.name AS product_name1,
@@ -263,22 +251,78 @@ GROUP BY
 ORDER BY 
 	count_of_orders DESC;
     
-# earning by category and by month (hangi kategori hangi ay ne kadar satmış)
+# hangi şehir ne kadar harcıyor
 SELECT
-	DATE_FORMAT(o.order_date, '%Y-%m') AS order_month,
-	c.name AS category_name,
-	SUM(oi.quantity * p.price) AS total_earning
+	u.address AS address_category,
+	COUNT(*) AS a,
+	SUM(o.total_price) AS total_spent
 FROM
-	categories c
-JOIN
-	products p ON c.id = p.category_id
-JOIN
-	order_items oi ON p.id = oi.product_id
-JOIN
-	orders o ON oi.order_id = o.id
+	users u
+LEFT JOIN
+	orders o ON u.id = o.user_id
 GROUP BY
-	order_month, c.name
+	address_category
 ORDER BY
-	order_month, total_earning DESC;
+	total_spent DESC;
     
+# kullanıcı yaşlarını gruplandır
+SELECT
+    FLOOR(TIMESTAMPDIFF(YEAR, u.birth_date, CURDATE())/10)*10 AS age_group,
+    COUNT(o.id) AS order_count,
+    SUM(o.total_price) AS total_spent
+FROM
+    users u
+LEFT JOIN
+    orders o ON u.id = o.user_id
+GROUP BY
+    age_group
+ORDER BY
+    age_group;
+ 
+# ortalama kullanıcı yaşı
+SELECT
+    AVG(TIMESTAMPDIFF(YEAR, birth_date, CURDATE())) AS average_age
+FROM
+    users;
     
+# youngest and oldest users
+SELECT
+    first_name,
+    last_name,
+    birth_date,
+    TIMESTAMPDIFF(YEAR, birth_date, CURDATE()) AS age
+FROM
+    users
+ORDER BY
+    age ASC
+LIMIT 1; -- youngest
+
+ SELECT
+    first_name,
+    last_name,
+    birth_date,
+    TIMESTAMPDIFF(YEAR, birth_date, CURDATE()) AS age
+FROM
+    users
+ORDER BY
+    age DESC
+LIMIT 1; -- oldest
+
+# kaç tane ram satılmış
+SELECT
+    p.name AS product_name,
+    c.name AS category_name,
+    SUM(oi.quantity) AS total_sold,
+    SUM(oi.quantity * p.price) AS total_income
+FROM
+    products p
+JOIN
+    categories c ON p.category_id = c.id
+JOIN
+    order_items oi ON p.id = oi.product_id
+WHERE
+    c.name = 'RAM'
+GROUP BY
+    p.name, c.name
+ORDER BY
+    total_sold DESC;
